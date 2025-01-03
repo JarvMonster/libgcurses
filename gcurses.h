@@ -1,6 +1,6 @@
 /* gcurses.h - 'great' cursor optimizations */
 /* Copyright (c) 2024 Ian P. Jarvis */
-/* Licensed under LGPL 3 */
+/* Licensed under LGPL 2.1 */
 
 #ifndef GCURSES_H
 #define GCURSES_H /* GCURSES_H */
