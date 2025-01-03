@@ -246,13 +246,13 @@ void panel_move(struct SCREEN* screen, struct PANEL* panel, unsigned int starty,
 }
 
 void panel_resize(struct SCREEN* screen, struct PANEL* panel, unsigned int lines, unsigned int cols) {
-	/* create copy of panel */
-	struct PANEL panel_copy;
-	panel_new(screen, &panel_copy, panel->starty, panel->startx, panel->endy - panel->starty, panel->endx - panel->startx, false);
-
 	/* save border status */
 	bool border = panel->border;
 	if(border) panel_no_border(panel);
+
+	/* create copy of panel */
+	struct PANEL panel_copy;
+	panel_new(screen, &panel_copy, panel->starty, panel->startx, panel->endy - panel->starty, panel->endx - panel->startx, false);
 
 	/* copy panel into panel_copy */
 	for(unsigned int y=0; y<(panel->endy - panel->starty); y++) {
@@ -286,6 +286,13 @@ void panel_resize(struct SCREEN* screen, struct PANEL* panel, unsigned int lines
 
 	/* destroy panel_copy */
 	panel_destroy(screen, &panel_copy);
+	
+	/* maybe add border */
+	if(border) {
+		gcurses_setfg(&fg, 0, 0, 0);
+		gcurses_setbg(&bg, 255, 255, 255);
+		panel_border(panel, &fg, &bg);
+	}
 }
 
 void panel_bottom(struct SCREEN* screen, struct PANEL* panel) {
