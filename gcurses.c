@@ -18,7 +18,7 @@ void screen_init(struct SCREEN* screen) {
 
 	/* initialize screen panels */
 	screen->panels = (struct PANEL**)malloc(MAX_PANELS * sizeof(struct PANEL*));
-	for(unsigned char g=0; g<MAX_PANELS; g++)
+	for(unsigned short g=0; g<MAX_PANELS; g++)
 		screen->panels[g] = NULL;
 
 	/* initialize screen len */
@@ -296,7 +296,7 @@ void panel_resize(struct SCREEN* screen, struct PANEL* panel, unsigned int lines
 }
 
 void panel_bottom(struct SCREEN* screen, struct PANEL* panel) {
-	for(unsigned char g=0; g<MAX_PANELS; g++) {
+	for(unsigned short g=0; g<MAX_PANELS; g++) {
 		if(screen->panels[g] == panel) {
 			for(unsigned char h=g; h>0; h--)
 				screen->panels[h] = screen->panels[h-1];
@@ -307,7 +307,7 @@ void panel_bottom(struct SCREEN* screen, struct PANEL* panel) {
 }
 
 void panel_top(struct SCREEN* screen, struct PANEL* panel) {
-	for(unsigned char g=0; g<MAX_PANELS; g++) {
+	for(unsigned short g=0; g<MAX_PANELS; g++) {
 		if(screen->panels[g] == panel) {
 			for(unsigned char h=g; h<(screen->len - 1); h++)
 				screen->panels[h] = screen->panels[h+1];
