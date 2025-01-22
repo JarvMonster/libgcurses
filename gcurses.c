@@ -193,7 +193,7 @@ void gcurses_refresh(struct SCREEN* screen) {
 	struct ATTR* panel_attr;
 
 	/* iterate through each panel */
-	for(unsigned char g=0; g<screen->len; g++) {
+	for(unsigned short g=0; g<screen->len; g++) {
 
 		/* iterate through each panel y, x to print everything again */
 		for(unsigned int y=0; y<(screen->panels[g]->endy - screen->panels[g]->starty); y++) {
@@ -220,9 +220,9 @@ void panel_destroy(struct SCREEN* screen, struct PANEL* panel) {
 	free(panel->bg);
 	free(panel->attr);
 
-	for(unsigned char g=0; g<screen->len; g++) {
+	for(unsigned short g=0; g<screen->len; g++) {
 		if(screen->panels[g] == panel) {
-			for(unsigned char h=g; h<(screen->len - 1); h++)
+			for(unsigned short h=g; h<(screen->len - 1); h++)
 				screen->panels[h] = screen->panels[h+1];
 			screen->panels[screen->len - 1] = NULL;
 			(screen->len)--;
@@ -309,7 +309,7 @@ void panel_bottom(struct SCREEN* screen, struct PANEL* panel) {
 void panel_top(struct SCREEN* screen, struct PANEL* panel) {
 	for(unsigned short g=0; g<MAX_PANELS; g++) {
 		if(screen->panels[g] == panel) {
-			for(unsigned char h=g; h<(screen->len - 1); h++)
+			for(unsigned short h=g; h<(screen->len - 1); h++)
 				screen->panels[h] = screen->panels[h+1];
 			screen->panels[screen->len - 1] = panel;
 			break;
@@ -319,7 +319,7 @@ void panel_top(struct SCREEN* screen, struct PANEL* panel) {
 
 void screen_end(struct SCREEN* screen) {
 	/* destroy panels on screen */
-	for(unsigned char g=0; g<screen->len; g++)
+	for(unsigned short g=0; g<screen->len; g++)
 		panel_destroy(screen, screen->panels[g]);
 	free(screen->panels);
 
