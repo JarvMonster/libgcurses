@@ -51,6 +51,8 @@ struct SCREEN {
 	unsigned short len;
 };
 
+void gcurses_start();
+
 void screen_init(struct SCREEN*);
 
 void gcurses_setfg(struct FG*, unsigned short, unsigned short, unsigned short);
@@ -96,5 +98,7 @@ void panel_bottom(struct SCREEN*, struct PANEL*);
 void panel_top(struct SCREEN*, struct PANEL*);
 
 void screen_end(struct SCREEN*);
+
+void gcurses_end();
 
 #endif /* GCURSES_H */
