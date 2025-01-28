@@ -9,13 +9,15 @@
 
 unsigned short MAX_PANELS = 255;
 
-void screen_init(struct SCREEN* screen) {
+void gcurses_start() {
 	/* enable alt screen */
 	printf("\e[?1049h");
 
 	/* disable line wrap */
 	printf("\e[=7l");
+}
 
+void screen_init(struct SCREEN* screen) {
 	/* initialize screen panels */
 	screen->panels = (struct PANEL**)malloc(MAX_PANELS * sizeof(struct PANEL*));
 	for(unsigned short g=0; g<MAX_PANELS; g++)
@@ -322,7 +324,9 @@ void screen_end(struct SCREEN* screen) {
 	for(unsigned short g=0; g<screen->len; g++)
 		panel_destroy(screen, screen->panels[g]);
 	free(screen->panels);
+}
 
+void gcurses_end() {
 	/* disable alt screen */
 	printf("\e[?1049l");
 
