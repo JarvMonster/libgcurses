@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-unsigned char MAX_PANELS = 255;
+unsigned short MAX_PANELS = 255;
 
 void screen_init(struct SCREEN* screen) {
 	/* enable alt screen */
