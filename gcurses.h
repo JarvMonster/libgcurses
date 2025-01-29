@@ -52,53 +52,39 @@ struct SCREEN {
 };
 
 void gcurses_start();
-
 void screen_init(struct SCREEN*);
 
 void gcurses_setfg(struct FG*, unsigned short, unsigned short, unsigned short);
-
 void gcurses_setbg(struct BG*, unsigned short, unsigned short, unsigned short);
-
 void gcurses_setattr(struct ATTR*, unsigned char);
 
 void gcurses_printchar(struct FG*, struct BG*, char);
-
 void gcurses_printchar_attr(struct FG*, struct BG*, char, struct ATTR*);
-
 void gcurses_printstr(struct FG*, struct BG*, char*);
-
 void gcurses_printstr_attr(struct FG*, struct BG*, char*, struct ATTR*);
 
 void gcurses_move(unsigned int, unsigned int);
 
 void panel_printchar_attr(struct PANEL*, unsigned int, unsigned int, struct FG*, struct BG*, char, struct ATTR*);
-
 void panel_printchar(struct PANEL*, unsigned int, unsigned int, struct FG*, struct BG*, char);
-
 void panel_printstr(struct PANEL*, unsigned int, unsigned int, struct FG*, struct BG*, char*);
-
 void panel_printstr_attr(struct PANEL*, unsigned int, unsigned int, struct FG*, struct BG*, char*, struct ATTR*);
 
 void panel_border(struct PANEL*, struct FG*, struct BG*);
-
 void panel_no_border(struct PANEL*);
-
-void panel_new(struct SCREEN*, struct PANEL*, unsigned int, unsigned int, unsigned int, unsigned int, bool);
 
 void gcurses_refresh(struct SCREEN*);
 
+void panel_new(struct SCREEN*, struct PANEL*, unsigned int, unsigned int, unsigned int, unsigned int, bool);
 void panel_destroy(struct SCREEN*, struct PANEL*);
 
 void panel_move(struct SCREEN*, struct PANEL*, unsigned int, unsigned int);
-
 void panel_resize(struct SCREEN*, struct PANEL*, unsigned int, unsigned int);
 
 void panel_bottom(struct SCREEN*, struct PANEL*);
-
 void panel_top(struct SCREEN*, struct PANEL*);
 
 void screen_end(struct SCREEN*);
-
 void gcurses_end();
 
 #endif /* GCURSES_H */
