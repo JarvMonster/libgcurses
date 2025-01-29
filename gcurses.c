@@ -135,6 +135,30 @@ void panel_no_border(struct PANEL* panel) {
 	panel->border = false;
 }
 
+void gcurses_refresh(struct SCREEN* screen) {
+	/* enable alt screen to refresh */
+	printf("\e[?1049h");
+
+	struct FG* panel_fg;
+	struct BG* panel_bg;
+	struct ATTR* panel_attr;
+
+	/* iterate through each panel */
+	for(unsigned short g=0; g<screen->len; g++) {
+
+		/* iterate through each panel y, x to print everything again */
+		for(unsigned int y=0; y<(screen->panels[g]->endy - screen->panels[g]->starty); y++) {
+			gcurses_move(screen->panels[g]->starty + y, screen->panels[g]->startx);
+			for(unsigned int x=0; x<(screen->panels[g]->endx - screen->panels[g]->startx); x++) {
+				panel_fg = &(screen->panels[g]->fg[y][x]);
+				panel_bg = &(screen->panels[g]->bg[y][x]);
+				panel_attr = &(screen->panels[g]->attr[y][x]);
+				gcurses_printchar_attr(panel_fg, panel_bg, screen->panels[g]->contents[y][x], panel_attr);
+			}
+		}
+	}
+}
+
 void panel_new(struct SCREEN* screen, struct PANEL* panel, unsigned int starty, unsigned int startx, unsigned int lines, unsigned int cols, bool border) {
 	/* sanity check */
 	if(!(screen->len < MAX_PANELS)) return;
@@ -184,30 +208,6 @@ void panel_new(struct SCREEN* screen, struct PANEL* panel, unsigned int starty, 
 	/* add panel to screen */
 	screen->panels[screen->len] = panel;
 	(screen->len)++;
-}
-
-void gcurses_refresh(struct SCREEN* screen) {
-	/* enable alt screen to refresh */
-	printf("\e[?1049h");
-
-	struct FG* panel_fg;
-	struct BG* panel_bg;
-	struct ATTR* panel_attr;
-
-	/* iterate through each panel */
-	for(unsigned short g=0; g<screen->len; g++) {
-
-		/* iterate through each panel y, x to print everything again */
-		for(unsigned int y=0; y<(screen->panels[g]->endy - screen->panels[g]->starty); y++) {
-			gcurses_move(screen->panels[g]->starty + y, screen->panels[g]->startx);
-			for(unsigned int x=0; x<(screen->panels[g]->endx - screen->panels[g]->startx); x++) {
-				panel_fg = &(screen->panels[g]->fg[y][x]);
-				panel_bg = &(screen->panels[g]->bg[y][x]);
-				panel_attr = &(screen->panels[g]->attr[y][x]);
-				gcurses_printchar_attr(panel_fg, panel_bg, screen->panels[g]->contents[y][x], panel_attr);
-			}
-		}
-	}
 }
 
 void panel_destroy(struct SCREEN* screen, struct PANEL* panel) {
