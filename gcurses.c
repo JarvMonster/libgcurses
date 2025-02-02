@@ -250,7 +250,11 @@ void panel_move(struct SCREEN* screen, struct PANEL* panel, unsigned int starty,
 void panel_resize(struct SCREEN* screen, struct PANEL* panel, unsigned int lines, unsigned int cols) {
 	/* save border status */
 	bool border = panel->border;
-	if(border) panel_no_border(panel);
+	if(border) {
+		struct FG panel_border_fg = panel->fg[0][0];
+		struct BG panel_border_bg = panel->bg[0][0];
+		panel_no_border(panel);
+	}
 
 	/* create copy of panel */
 	struct PANEL panel_copy;
@@ -276,11 +280,11 @@ void panel_resize(struct SCREEN* screen, struct PANEL* panel, unsigned int lines
 	for(unsigned int y=0; y<(panel_copy.endy - panel_copy.starty) && y<lines; y++) {
 		for(unsigned int x=0; x<(panel_copy.endx - panel_copy.startx) && x<cols; x++)
 			panel_printchar_attr(panel, y, x, &(panel_copy.fg[y][x]), &(panel_copy.bg[y][x]), panel_copy.contents[y][x], &(panel_copy.attr[y][x]));
-		/* potential leftover spots */
+		/* initialize potential extra columns with default values */
 		for(unsigned int c=(panel_copy.endx - panel_copy.startx); c<cols; c++)
 			panel_printchar_attr(panel, y, c, &fg, &bg, ' ', &attr);
 	}
-	/* potential leftover lines */
+	/* initialize potential extra lines with default values */
 	for(unsigned int l=(panel_copy.endy - panel_copy.starty); l<lines; l++) {
 		for(unsigned int x=0; x<cols; x++)
 			panel_printchar_attr(panel, l, x, &fg, &bg, ' ', &attr);
@@ -290,11 +294,7 @@ void panel_resize(struct SCREEN* screen, struct PANEL* panel, unsigned int lines
 	panel_destroy(screen, &panel_copy);
 	
 	/* maybe add border */
-	if(border) {
-		gcurses_setfg(&fg, 0, 0, 0);
-		gcurses_setbg(&bg, 255, 255, 255);
-		panel_border(panel, &fg, &bg);
-	}
+	if(border) panel_border(panel, &panel_border_fg, &panel_border_bg);
 }
 
 void panel_bottom(struct SCREEN* screen, struct PANEL* panel) {
